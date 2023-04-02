@@ -11,9 +11,7 @@ import { isRTL, formatDate, isMobile } from './helpers';
 
 $(() => {
   if (isRTL()) {
-    $('html')
-      .attr('dir', 'rtl')
-      .addClass('rtl');
+    $('html').attr('dir', 'rtl').addClass('rtl');
   }
 
   const $body = $('body');
@@ -79,7 +77,7 @@ $(() => {
     const api = new GhostContentAPI({
       url: host,
       key,
-      version: 'v5.0'
+      version: 'v5.0',
     });
     const allPosts = [];
     const fuseOptions = {
@@ -88,28 +86,28 @@ $(() => {
       findAllMatches: true,
       includeScore: true,
       minMatchCharLength: 2,
-      keys: ['title', 'custom_excerpt', 'tags.name']
+      keys: ['title', 'custom_excerpt', 'tags.name'],
     };
 
     api.posts
       .browse({
         limit: 'all',
         include: 'tags',
-        fields: 'id, title, url, published_at, custom_excerpt'
+        fields: 'id, title, url, published_at, custom_excerpt',
       })
-      .then(posts => {
+      .then((posts) => {
         for (let i = 0, len = posts.length; i < len; i++) {
           allPosts.push(posts[i]);
         }
 
         fuse = new Fuse(allPosts, fuseOptions);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
-  const toggleDesktopTopbarOverflow = disableOverflow => {
+  const toggleDesktopTopbarOverflow = (disableOverflow) => {
     if (!isMobile()) {
       if (disableOverflow) {
         $mainNav.addClass('toggle-overflow');
@@ -160,7 +158,7 @@ $(() => {
   $inputSearch.on('keyup', () => {
     if ($inputSearch.val().length > 0 && fuse) {
       const results = fuse.search($inputSearch.val());
-      const bestResults = results.filter(result => {
+      const bestResults = results.filter((result) => {
         if (result.score <= 0.5) {
           return result;
         }
@@ -218,7 +216,7 @@ $(() => {
     toggleDesktopTopbarOverflow(false);
   });
 
-  $(window).on('click', e => {
+  $(window).on('click', (e) => {
     if (submenuIsOpen) {
       if ($submenuOption && !$submenuOption.contains(e.target)) {
         submenuIsOpen = false;
@@ -227,7 +225,7 @@ $(() => {
     }
   });
 
-  $(document).on('keyup', e => {
+  $(document).on('keyup', (e) => {
     if (e.key === 'Escape' && $search.hasClass('opened')) {
       $closeSearch.trigger('click');
     }
@@ -235,7 +233,7 @@ $(() => {
 
   if (currentSavedTheme) {
     if (currentSavedTheme === 'dark') {
-      $toggleDarkMode.each(function() {
+      $toggleDarkMode.each(function () {
         $(this).attr('checked', true);
       });
     }
@@ -245,7 +243,7 @@ $(() => {
     const headroom = new Headroom($header[0], {
       tolerance: {
         down: 10,
-        up: 20
+        up: 20,
       },
       offset: 15,
       onUnpin: () => {
@@ -259,7 +257,7 @@ $(() => {
             desktopSecondaryMenuTippy.hide();
           }
         }
-      }
+      },
     });
     headroom.init();
   }
@@ -271,10 +269,10 @@ $(() => {
       slidesPerView: 'auto',
       a11y: true,
       on: {
-        init: function() {
+        init: function () {
           shave('.js-recent-article-title', 50);
-        }
-      }
+        },
+      },
     });
   }
 
@@ -293,7 +291,7 @@ $(() => {
       },
       onHidden() {
         toggleDesktopTopbarOverflow(false);
-      }
+      },
     });
   }
 
@@ -304,4 +302,8 @@ $(() => {
 
   tryToRemoveNewsletter();
   trySearchFeature();
+
+  // add dark mode to code-toolbar
+  const codeToolbars = document.querySelectorAll('.code-toolbar, code');
+  codeToolbars.forEach((cT) => cT.setAttribute('data-theme', 'dark'));
 });

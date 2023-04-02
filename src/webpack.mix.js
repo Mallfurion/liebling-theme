@@ -3,7 +3,7 @@ const mix = require('laravel-mix');
 mix.options({
   terser: {
     extractComments: false,
-  }
+  },
 });
 
 mix
@@ -13,6 +13,7 @@ mix
   .js('js/home.js', 'js/')
   .js('js/post.js', 'js/')
   .js('js/page.js', 'js/')
+  .js('js/prism.js', 'js/')
   .extract()
   .sass('sass/app.scss', 'css/')
   .sass('sass/home.scss', 'css/')
@@ -22,15 +23,14 @@ mix
   .sass('sass/tags.scss', 'css/')
   .sass('sass/404.scss', 'css/')
   .options({
-    processCssUrls: false
+    processCssUrls: false,
   })
   .browserSync({
     proxy: 'localhost:2368',
-    files: [
-      '../assets/js/**/*.js',
-      '../assets/css/**/*.css',
-      '../**/*.hbs'
-    ]
+    files: ['../assets/js/**/*.js', '../assets/css/**/*.css', '../**/*.hbs'],
   })
-  .copyDirectory('sass/fonts/source-sans-pro/', '../assets/fonts/source-sans-pro/')
+  .copyDirectory(
+    'sass/fonts/source-sans-pro/',
+    '../assets/fonts/source-sans-pro/'
+  )
   .copy('sass/fonts/icomoon/*.*', '../assets/fonts/icomoon/');
